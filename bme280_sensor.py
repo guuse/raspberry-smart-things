@@ -2,7 +2,12 @@ import bme280
 import smbus2
 import time;
 import datetime;
-import json
+import json;
+from firebase import firebase
+
+firebase_con = firebase.FirebaseApplication('https://smart-things-2019.firebaseio.com', authentication=None)
+authentication = firebase.FirebaseAuthentication('pHkVlRIa1jZMe6VLEyOycXYEd850xDGjiowMDvUy', 'test@gmail.com')
+firebase.FirebaseAuthentication = authentication
 
 port = 1
 address = 0x76
@@ -32,7 +37,13 @@ while True:
         read_data = json.load(json_file)
         for p in read_data['measurements']:
             print("{0}: Date: {1}".format(_time, p['Date']))
-            print("{0}: Humidity: {1}%".format(_time, p['Temperature']))
-            print("{0}: Temperature: {1}°C".format(_time, p['Humidity']))
+            print("{0}: Humidity: {1}%".format(_time, p['Humidity']))
+            print("{0}: Temperature: {1}°C".format(_time, p['Temperature']))
             print("")
-    time.sleep(10)
+
+    new_user = 'Test gebruiker'
+    #firebase_con.post('/users', new_user)
+    result = firebase_con.get('/users', None)
+    print(result)
+    
+    time.sleep(5)
