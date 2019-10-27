@@ -39,11 +39,12 @@ while True:
             print("{0}: Date: {1}".format(_time, p['Date']))
             print("{0}: Humidity: {1}%".format(_time, p['Humidity']))
             print("{0}: Temperature: {1}°C".format(_time, p['Temperature']))
+            print(bme280_data.pressure)
             print("")
 
     new_user = 'Test gebruiker'
     #firebase_con.post('/users', new_user)
-    result = firebase_con.get('/users', None)
-    print(result)
+    #result = firebase_con.get('/users', None)
+    #print(result)
     
-    time.sleep(5)
+    time.sleep(1)
