@@ -3,6 +3,8 @@ import smbus2
 import time;
 import datetime;
 import json;
+from gtts import gTTS
+import pygame
 from firebase import firebase
 
 firebase_con = firebase.FirebaseApplication('https://smart-things-2019.firebaseio.com', authentication=None)
@@ -38,13 +40,22 @@ while True:
         for p in read_data['measurements']:
             print("{0}: Date: {1}".format(_time, p['Date']))
             print("{0}: Humidity: {1}%".format(_time, p['Humidity']))
-            print("{0}: Temperature: {1}°C".format(_time, p['Temperature']))
+            print("{0}: Temperature: {1}C".format(_time, p['Temperature']))
             print(bme280_data.pressure)
             print("")
+            tts = gTTS("The temperature is {0} degrees celcius, with a humidity of {1} percent.".format(p['Temperature'], p['Humidity']), 'en')
+            tts.save('test.mp3')
+            pygame.mixer.init()
+            pygame.mixer.music.load("test.mp3")
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy() == True:
+                continue
 
+	
     new_user = 'Test gebruiker'
     #firebase_con.post('/users', new_user)
     #result = firebase_con.get('/users', None)
     #print(result)
-    
+   
+
     time.sleep(1)
