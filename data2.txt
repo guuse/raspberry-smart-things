@@ -1,0 +1,1 @@
+{"measurements": [{"Date": "13/11/19", "Temperature": 18.5, "Humidity": 47.2, "Windspeed": 0}]}
