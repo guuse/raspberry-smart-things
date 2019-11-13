@@ -1,5 +1,9 @@
 #project based
-data.txt
+data1.txt
+data2.txt
+data3.txt
+data4.txt
+data5.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
