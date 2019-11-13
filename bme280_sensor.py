@@ -18,7 +18,7 @@ bus = smbus2.SMBus(port)
 
 bme280.load_calibration_params(bus,address)
 
-_time = datetime.datetime.now().strftime("%I:%M%p")
+_time = datetime.datetime.now().strftime("%H:%M")
 date = datetime.datetime.now().strftime("%d/%m/%y")
 
 rq = requests.get('https://extreme-ip-lookup.com/json')
@@ -26,22 +26,38 @@ rqdata = json.loads(rq.content.decode())
 lat = rqdata['lat']
 lon = rqdata['lon']
 
+dataCount = 1
+
+def DataFile():
+    global dataCount
+    currentCount = dataCount
+    if currentCount >= 5:
+        dataCount = 1
+        return 'data5.txt'
+    else:
+        dataCount = dataCount + 1
+        return "data{0}.txt".format(currentCount)
+
 while True:
     bme280_data = bme280.sample(bus,address)
     hum  = round(bme280_data.humidity,1)
     temp = round(bme280_data.temperature,1)
-    
+    _time = datetime.datetime.now().strftime("%H:%M")
+
+    loopFile = DataFile()
     write_data = {}
     write_data['measurements'] = []
     write_data['measurements'].append({
+        'Time': _time,
         'Date': date,
         'Temperature': temp,
-        'Humidity': hum
-    })    
-    with open('data.txt', 'w') as outfile:
+        'Humidity': hum,
+    'Windspeed': 0
+    })
+    with open(loopFile, 'w') as outfile:
         json.dump(write_data, outfile)
-    
-    with open('data.txt') as json_file:
+
+    with open(loopFile) as json_file:
         read_data = json.load(json_file)
         for p in read_data['measurements']:
             print("{0}: Date: {1}".format(_time, p['Date']))
@@ -56,19 +72,19 @@ while True:
             while pygame.mixer.music.get_busy() == True:
                 continue
 
-    
+
     firebase_con.put('/0912071-stream-data/student-data', "first-name", 'Guus')
     firebase_con.put('/0912071-stream-data/student-data', "last-name", 'Ekkelenkamp')
     firebase_con.put('/0912071-stream-data/student-data', "student-number", '0912071')
     firebase_con.put('/0912071-stream-data/student-data', "website", 'guusekkelenkamp.nl')
-    
+
     firebase_con.put('/0912071-stream-data/sensor-data', "humidity", "{0}%".format(hum) )
     firebase_con.put('/0912071-stream-data/sensor-data', "temperature", "{0}°C".format(temp))
     firebase_con.put('/0912071-stream-data/sensor-data', "windspeed", 'Heel snel, echt, heb hem net gemeten')
-    
+
     firebase_con.put('/0912071-stream-data/meta-data', "longitude", lon)
     firebase_con.put('/0912071-stream-data/meta-data', "latitude", lat)
     firebase_con.put('/0912071-stream-data/meta-data', "date", date)
     firebase_con.put('/0912071-stream-data/meta-data', "time", _time)
-   
-    time.sleep(10)
+
+    time.sleep(60)
