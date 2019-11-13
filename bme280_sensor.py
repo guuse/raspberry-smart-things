@@ -1,11 +1,12 @@
-import bme280
-import smbus2
+import bme280;
+import smbus2;
 import time;
 import datetime;
+import requests;
 import json;
-from gtts import gTTS
-import pygame
-from firebase import firebase
+from gtts import gTTS;
+import pygame;
+from firebase import firebase;
 
 firebase_con = firebase.FirebaseApplication('https://smart-things-2019.firebaseio.com', authentication=None)
 authentication = firebase.FirebaseAuthentication('pHkVlRIa1jZMe6VLEyOycXYEd850xDGjiowMDvUy', 'test@gmail.com')
@@ -19,6 +20,11 @@ bme280.load_calibration_params(bus,address)
 
 _time = datetime.datetime.now().strftime("%I:%M%p")
 date = datetime.datetime.now().strftime("%d/%m/%y")
+
+rq = requests.get('https://extreme-ip-lookup.com/json')
+rqdata = json.loads(rq.content.decode())
+lat = rqdata['lat']
+lon = rqdata['lon']
 
 while True:
     bme280_data = bme280.sample(bus,address)
@@ -41,7 +47,6 @@ while True:
             print("{0}: Date: {1}".format(_time, p['Date']))
             print("{0}: Humidity: {1}%".format(_time, p['Humidity']))
             print("{0}: Temperature: {1}C".format(_time, p['Temperature']))
-            print(bme280_data.pressure)
             print("")
             tts = gTTS("The temperature is {0} degrees celcius, with a humidity of {1} percent.".format(p['Temperature'], p['Humidity']), 'en')
             tts.save('test.mp3')
@@ -51,11 +56,19 @@ while True:
             while pygame.mixer.music.get_busy() == True:
                 continue
 
-	
-    new_user = 'Test gebruiker'
-    #firebase_con.post('/users', new_user)
-    #result = firebase_con.get('/users', None)
-    #print(result)
+    
+    firebase_con.put('/0912071-stream-data/student-data', "first-name", 'Guus')
+    firebase_con.put('/0912071-stream-data/student-data', "last-name", 'Ekkelenkamp')
+    firebase_con.put('/0912071-stream-data/student-data', "student-number", '0912071')
+    firebase_con.put('/0912071-stream-data/student-data', "website", 'guusekkelenkamp.nl')
+    
+    firebase_con.put('/0912071-stream-data/sensor-data', "humidity", "{0}%".format(hum) )
+    firebase_con.put('/0912071-stream-data/sensor-data', "temperature", "{0}°C".format(temp))
+    firebase_con.put('/0912071-stream-data/sensor-data', "windspeed", 'Heel snel, echt, heb hem net gemeten')
+    
+    firebase_con.put('/0912071-stream-data/meta-data', "longitude", lon)
+    firebase_con.put('/0912071-stream-data/meta-data', "latitude", lat)
+    firebase_con.put('/0912071-stream-data/meta-data', "date", date)
+    firebase_con.put('/0912071-stream-data/meta-data', "time", _time)
    
-
-    time.sleep(1)
+    time.sleep(10)
