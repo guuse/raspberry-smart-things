@@ -2,11 +2,12 @@ import RPi.GPIO as GPIO
 import time
 import math
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
-Trig1 = 23
-Trig2 = 24
-Echo1 = 14
-Echo2 = 15
+Trig1 = 24
+Trig2 = 23
+Echo1 = 15
+Echo2 = 14
 
 print("Testing towers")
 
@@ -15,7 +16,7 @@ GPIO.setup(Trig2, GPIO.OUT)
 GPIO.setup(Echo1, GPIO.IN)
 GPIO.setup(Echo2, GPIO.IN)
 
-sound_time = 0.0095 / 343
+sound_time = 0.00095 / 343
 
 def removeSound(speed):
         return speed - sound_time
@@ -31,10 +32,10 @@ time.sleep(0.00001)
 GPIO.output(Trig1, False)
 
 while GPIO.input(Echo1)==0:
-	start_timeX = time.time()
+    start_timeX = time.time()
 
 while GPIO.input(Echo1)==1:
-	end_timeX = time.time()
+    end_timeX = time.time()
 
 timeX = removeSound(end_timeX - start_timeX)
 
@@ -68,4 +69,4 @@ GPIO.cleanup()
 
 
 def removeSound(speed):
-	return speed - sound_time
+    return speed - sound_time
