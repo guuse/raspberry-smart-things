@@ -1,10 +1,13 @@
+import threading
+import sys
 import tkinter as tk
 from pandas import DataFrame
 from PIL import ImageTk
+import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-import json;
+import json
 
 i = 1
 _time =[]
@@ -69,4 +72,13 @@ bar3.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
 df3.plot(kind='bar', legend=False, ax=ax3, color='r', fontsize=6)
 ax3.set_title('Windspeed in KM/H')
 
+def destroy():
+    root.destroy()
+
+#t = threading.Timer(5.0, destroy)
+#t.start()
+
 root.mainloop()
+
+#print('out')
+#exit()
