@@ -75,10 +75,4 @@ ax3.set_title('Windspeed in KM/H')
 def destroy():
     root.destroy()
 
-#t = threading.Timer(5.0, destroy)
-#t.start()
-
 root.mainloop()
-
-#print('out')
-#exit()

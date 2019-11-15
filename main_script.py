@@ -27,8 +27,6 @@ bus = smbus2.SMBus(port)
 bme280.load_calibration_params(bus,address)
 
 firebase_con = firebase.FirebaseApplication('https://smart-things-2019.firebaseio.com', authentication=None)
-authentication = firebase.FirebaseAuthentication('pHkVlRIa1jZMe6VLEyOycXYEd850xDGjiowMDvUy', 'test@gmail.com')
-firebase.FirebaseAuthentication = authentication
 
 sound_time = 0.095 / 343
 
