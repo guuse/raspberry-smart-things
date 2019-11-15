@@ -3,7 +3,7 @@ For this project i've created a homestation which collects Windspeed, Temperatur
 For the temperature and humidty im using a BME280 sensor. For the windspeed I've used 4 ultrasonic sensors.
 I'm using a 7" raspberry pi display to show off my graphs/measurements.
 
-#How to run
+# How to run
 
 Make sure to set up your circuit https://drive.google.com/file/d/1KlBjhFupi4Uf5oshehENlncN494vS39o/view?usp=sharing
 
@@ -17,7 +17,7 @@ Open a new tab and run `cron-stop.py`
 
 You should see a GUI with data from the main script
 
-#Explanation
+# Explanation
 This project uses 2 main scripts, and 2 cron-like scripts.
 
 ### main_script.py
