@@ -4,6 +4,7 @@ For the temperature and humidty im using a BME280 sensor. For the windspeed I've
 I'm using a 7" raspberry pi display to show off my graphs/measurements.
 
 #How to run
+
 Make sure to set up your circuit https://drive.google.com/file/d/1KlBjhFupi4Uf5oshehENlncN494vS39o/view?usp=sharing
 
 Install all modules listed in the `req.txt` folder, this can be done by running `pip3 install --no-cache-dir -r req.txt`
